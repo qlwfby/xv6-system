@@ -15,8 +15,9 @@ struct inode {
   uint inum;          // Inode number
   int ref;            // Reference count
   int flags;          // I_BUSY, I_VALID
-  short ownerId
-  short groupId
+  // Han: ownerId groupId
+  short ownerId;
+  short groupId;
 
   short type;         // copy of disk inode
   short major;
