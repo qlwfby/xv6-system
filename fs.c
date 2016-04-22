@@ -286,6 +286,8 @@ ilock(struct inode *ip)
     ip->minor = dip->minor;
     ip->nlink = dip->nlink;
     ip->size = dip->size;
+    ip->ownerId = dip->ownerId;
+    ip->groupId = dip->groupId;
     memmove(ip->addrs, dip->addrs, sizeof(ip->addrs));
     brelse(bp);
     ip->flags |= I_VALID;
@@ -427,6 +429,8 @@ stati(struct inode *ip, struct stat *st)
   st->type = ip->type;
   st->nlink = ip->nlink;
   st->size = ip->size;
+  st->ownerId = ip->ownerId;
+  st->groupId = ip->groupId;
 }
 
 //PAGEBREAK!

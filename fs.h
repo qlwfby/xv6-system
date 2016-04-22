@@ -26,6 +26,9 @@ struct superblock {
 
 // On-disk inode structure
 struct dinode {
+
+  short ownerId;
+  short groupId;
   short type;           // File type
   short major;          // Major device number (T_DEV only)
   short minor;          // Minor device number (T_DEV only)
