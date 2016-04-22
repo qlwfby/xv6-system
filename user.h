@@ -25,6 +25,10 @@ int sleep(int);
 int uptime(void);
 int date(struct rtcdate*);
 int chmod(char *, int);
+int halt(void);
+int mkfile(char*);
+int getuid(void);
+
 
 
 // ulib.c

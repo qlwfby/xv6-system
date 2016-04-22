@@ -6,5 +6,5 @@ int
 main(int argc, char *argv[])
 {
   halt();
-  exit(0);
+  exit();
 }

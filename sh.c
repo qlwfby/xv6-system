@@ -157,6 +157,8 @@ main(void)
   
   // Read and run input commands.
   while(getcmd(buf, sizeof(buf)) >= 0){
+	 if(buf[0] == 'e' && buf[1] == 'x' && buf[2] == 'i'&& buf[3] == 't')
+		 exit();
     if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
       // Clumsy but will have to do for now.
       // Chdir has no effect on the parent if run in the child.
