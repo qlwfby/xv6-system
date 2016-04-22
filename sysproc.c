@@ -98,3 +98,9 @@ sys_date(void){
   cmostime((struct rtcdate *) addr);
   return 0;
 }
+
+int sys_halt{
+	char *p = "Shutdown";
+   	for( ; *p; p++)
+		outb(0x8900, *p);
+}
