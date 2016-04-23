@@ -25,4 +25,5 @@
 #define	SYS_halt   24
 #define	SYS_mkfile 25
 #define	SYS_getuid 26
+#define	SYS_setuid 27
 

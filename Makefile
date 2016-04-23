@@ -176,6 +176,8 @@ UPROGS=\
 	_chmod\
 	_shutdown\
 	_touch\
+	_adduser\
+
 
 
 fs.img: mkfs README $(UPROGS)

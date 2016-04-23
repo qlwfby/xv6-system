@@ -34,5 +34,7 @@ SYSCALL(chmod)
 SYSCALL(halt)
 SYSCALL(mkfile)
 SYSCALL(getuid)
+SYSCALL(setuid)
+
 
 

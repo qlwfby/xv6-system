@@ -28,6 +28,7 @@ int chmod(char *, int);
 int halt(void);
 int mkfile(char*);
 int getuid(void);
+int setuid(int);
 
 
 
