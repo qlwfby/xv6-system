@@ -4,6 +4,7 @@
 #include "user.h"
 #include "x86.h"
 
+
 char*
 strcpy(char *s, char *t)
 {
@@ -54,7 +55,6 @@ gets(char *buf, int max)
 {
   int i, cc;
   char c;
-
   for(i=0; i+1 < max; ){
     cc = read(0, &c, 1);
     if(cc < 1)

@@ -15,7 +15,7 @@
 #include "x86.h"
 
 static void consputc(int);
-
+int ispasswd=0;
 static int panicked = 0;
 
 static struct {
@@ -214,7 +214,10 @@ consoleintr(int (*getc)(void))
       if(c != 0 && input.e-input.r < INPUT_BUF){
         c = (c == '\r') ? '\n' : c;
         input.buf[input.e++ % INPUT_BUF] = c;
-        consputc(c);
+        if(ispasswd && c!='\n')
+            consputc('*');
+        else
+        	consputc(c);
         if(c == '\n' || c == C('D') || input.e == input.r+INPUT_BUF){
           input.w = input.e;
           wakeup(&input.r);
@@ -238,6 +241,7 @@ consoleread(struct inode *ip, char *dst, int n)
   iunlock(ip);
   target = n;
   acquire(&cons.lock);
+
   while(n > 0){
     while(input.r == input.w){
       if(proc->killed){
@@ -261,6 +265,7 @@ consoleread(struct inode *ip, char *dst, int n)
     if(c == '\n')
       break;
   }
+
   release(&cons.lock);
   ilock(ip);
 

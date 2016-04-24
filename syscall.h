@@ -34,4 +34,10 @@
 =======
 #define SYS_fsck   28
 #define SYS_isdir   29
+<<<<<<< HEAD
+>>>>>>> gaohannk/master
+=======
+#define SYS_read2   30
+#define SYS_getinode  31
+#define SYS_tree  32
 >>>>>>> gaohannk/master
