@@ -13,12 +13,52 @@
 #include "fs.h"
 #include "file.h"
 #include "fcntl.h"
+#include "spinlock.h"
+
 //#include "user.h"
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
 extern int sys_getuid(void);
 //extern struct inode* iget(uint, uint);
 extern int ispasswd;
+extern char* skipelem(char *path, char *name);
+extern struct {
+	  struct spinlock lock;
+	  struct inode inode[NINODE];
+} icache;
+
+static struct inode*
+iget(uint dev, uint inum)
+{
+  struct inode *ip, *empty;
+
+  acquire(&icache.lock);
+
+  // Is the inode already cached?
+  empty = 0;
+  for(ip = &icache.inode[0]; ip < &icache.inode[NINODE]; ip++){
+    if(ip->ref > 0 && ip->dev == dev && ip->inum == inum){
+      ip->ref++;
+      release(&icache.lock);
+      return ip;
+    }
+    if(empty == 0 && ip->ref == 0)    // Remember empty slot.
+      empty = ip;
+  }
+
+  // Recycle an inode cache entry.
+  if(empty == 0)
+    panic("iget: no inodes");
+
+  ip = empty;
+  ip->dev = dev;
+  ip->inum = inum;
+  ip->ref = 1;
+  ip->flags = 0;
+  release(&icache.lock);
+
+  return ip;
+}
 
 static int
 argfd(int n, int *pfd, struct file **pf)
@@ -561,7 +601,7 @@ sys_fsck(void){
 }
 int
 sys_isdir(void){
-	char *path;
+	  char *path;
 	  struct inode *ip;
 	  begin_op();
 	  if(argstr(0, &path) < 0 || (ip=namei(path))==0) {
@@ -577,15 +617,34 @@ sys_isdir(void){
 	  return 1;
 }
 
-int sys_getinode(void){
+struct inode sys_getinode(void){
 	struct inode *ip;
 	int inum;
 	begin_op();
-	if(argstr(0, &inum) < 0) {
-		    end_op();
-		    return -1;
-	}
+	argint(0, &inum);
 	ip= iget(ROOTDEV,inum);
     end_op();
-	return ip;
+	return *ip;
+}
+
+int
+sys_tree(void){
+	/*  char *path;
+	  struct inode *ip;
+	  begin_op();
+	  if(argstr(0, &path) < 0 || (ip=namei(path))==0) {
+	    end_op();
+	    return -1;
+	  }
+	  if(ip->type!=T_DIR){
+		  end_op();
+		  return 0;
+	  }
+	  char *name;
+	  uint *poff;
+	  skipelem(path,name);
+	  ip=dirlookup(ip,name,poff);
+	  iunlockput(ip);
+	  end_op();*/
+	  return 1;
 }

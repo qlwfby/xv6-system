@@ -32,6 +32,8 @@ int setuid(int);
 int fsck(void);
 int isdir(char*);
 int read2(int, void*,int,int);
+struct inode getinode(int);
+int tree(char *);
 
 
 
