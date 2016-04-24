@@ -576,3 +576,16 @@ sys_isdir(void){
 	  end_op();
 	  return 1;
 }
+
+int sys_getinode(void){
+	struct inode *ip;
+	int inum;
+	begin_op();
+	if(argstr(0, &inum) < 0) {
+		    end_op();
+		    return -1;
+	}
+	ip= iget(ROOTDEV,inum);
+    end_op();
+	return ip;
+}

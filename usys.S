@@ -38,6 +38,7 @@ SYSCALL(setuid)
 SYSCALL(fsck)
 SYSCALL(isdir)
 SYSCALL(read2)
+SYSCALL(getinode)
 
 
 

@@ -19,7 +19,13 @@ main(int argc, char *argv[])
 		  return -1;
 	  struct dirent dir;
 	  while(read(fd,&dir,sizeof(dir))!=0){
-		  printf(1,dir.name);
+		  printf(1,"|_ %d,%d",dir.name,dir.inum);
+		  struct stat *st;
+		  struct inode *ip;
+		  ip= getinode(dir.inum);
+		  if(ip->type==T_DIR){
+
+		  }
 	  }
   return 0;
 }

@@ -29,3 +29,4 @@
 #define SYS_fsck   28
 #define SYS_isdir   29
 #define SYS_read2   30
+#define SYS_getinode   31
