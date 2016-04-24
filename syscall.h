@@ -28,3 +28,4 @@
 #define	SYS_setuid 27
 #define SYS_fsck   28
 #define SYS_isdir   29
+#define SYS_read2   30

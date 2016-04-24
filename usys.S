@@ -37,6 +37,7 @@ SYSCALL(getuid)
 SYSCALL(setuid)
 SYSCALL(fsck)
 SYSCALL(isdir)
+SYSCALL(read2)
 
 
 

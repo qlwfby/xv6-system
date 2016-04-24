@@ -106,6 +106,7 @@ extern int sys_getuid(void);
 extern int sys_setuid(void);
 extern int sys_fsck(void);
 extern int sys_isdir(void);
+extern int sys_read2(void);
 
 
 static int (*syscalls[])(void) = {
@@ -138,7 +139,7 @@ static int (*syscalls[])(void) = {
 [SYS_setuid]  sys_setuid,
 [SYS_fsck]  sys_fsck,
 [SYS_isdir]  sys_isdir,
-
+[SYS_read2]  sys_read2,
 };
 
 void

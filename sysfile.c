@@ -18,6 +18,7 @@
 // and return both the descriptor and the corresponding struct file.
 extern int sys_getuid(void);
 //extern struct inode* iget(uint, uint);
+extern int ispasswd;
 
 static int
 argfd(int n, int *pfd, struct file **pf)
@@ -74,10 +75,24 @@ sys_read(void)
   struct file *f;
   int n;
   char *p;
-
   if(argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argptr(1, &p, n) < 0)
     return -1;
   return fileread(f, p, n);
+}
+
+int
+sys_read2(void)
+{
+  struct file *f;
+  int n;
+  int ispwd;
+  char *p;
+  if(argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argptr(1, &p, n) < 0||argint(3, &ispwd) < 0 )
+    return -1;
+  ispasswd=ispwd;
+  int bytes=fileread(f, p, n);
+  ispasswd=0;
+  return bytes;
 }
 
 int
@@ -298,7 +313,7 @@ sys_open(void)
     return -1;
 
   begin_op();
-  if(sys_getuid())
+
   if(omode & O_CREATE){
     ip = create(path, T_FILE, 0, 0, sys_getuid());
     if(ip == 0){
@@ -539,7 +554,7 @@ sys_fsck(void){
 	  //for(i=0;i<NDIRECT+1;i++){
 	//	  uint add =ip->addrs[i];
 	//	  char * err = (char*) add;
-	//	  panic(err);
+	 //	  panic(err);
 	 // }
 	 // inode state
 	 return 0;

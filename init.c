@@ -6,7 +6,6 @@
 #include "fcntl.h"
 #include "psw.h"
 
-
 char *argv[] = { "sh", 0 };
 int
 getuser(char *buf, int nbuf)
@@ -17,11 +16,29 @@ getuser(char *buf, int nbuf)
 	  return -1;
   return 0;
 }
+char*
+gets2(char *buf, int max)
+{
+  int i, cc;
+  char c;
+  int ispwd=1;
+  for(i=0; i+1 < max; ){
+    cc = read2(0, &c, 1, ispwd);
+    if(cc < 1)
+      break;
+    buf[i++] = c;
+    if(c == '\n' || c == '\r')
+      break;
+  }
+  buf[i] = '\0';
+  return buf;
+}
+
 int
 getpwd(char *buf, int nbuf)
 {
   memset(buf, 0, nbuf);
-  gets(buf, nbuf);
+  gets2(buf, nbuf);
   if(buf[0] == 0) // EOF
     return -1;
   return 0;

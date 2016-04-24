@@ -230,8 +230,8 @@ ialloc(ushort type)
   din.type = xshort(type);
   din.nlink = xshort(1);
   din.size = xint(0);
-  din.ownerId = xshort(99);
-  din.groupId = xshort(1);
+  din.ownerId = xshort(0);
+  din.groupId = xshort(0);
   din.mode = xint(0x0700);
 
   winode(inum, &din);
