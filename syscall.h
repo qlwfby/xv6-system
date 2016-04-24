@@ -28,5 +28,10 @@
 <<<<<<< HEAD
 =======
 #define	SYS_setuid 27
+<<<<<<< HEAD
 >>>>>>> gaohannk/master
 
+=======
+#define SYS_fsck   28
+#define SYS_isdir   29
+>>>>>>> gaohannk/master

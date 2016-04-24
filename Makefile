@@ -187,7 +187,8 @@ UPROGS=\
 	_shutdown\
 	_touch\
 	_adduser\
-
+	_fsck\
+	_tree
 
 >>>>>>> gaohannk/master
 

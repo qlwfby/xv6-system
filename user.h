@@ -31,6 +31,11 @@ int getuid(void);
 <<<<<<< HEAD
 =======
 int setuid(int);
+<<<<<<< HEAD
+>>>>>>> gaohannk/master
+=======
+int fsck(void);
+int isdir(char*);
 >>>>>>> gaohannk/master
 
 

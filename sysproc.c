@@ -47,7 +47,6 @@ int
 sys_setuid(void)
 {
 	int id;
-
 	if(argint(0, &id) < 0)
 	    return -1;
   return proc->curUserId=id;
@@ -123,3 +122,5 @@ int sys_halt(void){
    		outw(0xB004, 0x2000);
    	return 0;
 }
+
+

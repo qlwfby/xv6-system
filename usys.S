@@ -37,6 +37,8 @@ SYSCALL(getuid)
 <<<<<<< HEAD
 =======
 SYSCALL(setuid)
+SYSCALL(fsck)
+SYSCALL(isdir)
 
 >>>>>>> gaohannk/master
 

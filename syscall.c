@@ -106,6 +106,12 @@ extern int sys_getuid(void);
 <<<<<<< HEAD
 =======
 extern int sys_setuid(void);
+<<<<<<< HEAD
+>>>>>>> gaohannk/master
+=======
+extern int sys_fsck(void);
+extern int sys_isdir(void);
+
 >>>>>>> gaohannk/master
 
 static int (*syscalls[])(void) = {
@@ -140,6 +146,12 @@ static int (*syscalls[])(void) = {
 
 =======
 [SYS_setuid]  sys_setuid,
+<<<<<<< HEAD
+>>>>>>> gaohannk/master
+=======
+[SYS_fsck]  sys_fsck,
+[SYS_isdir]  sys_isdir,
+
 >>>>>>> gaohannk/master
 };
 
