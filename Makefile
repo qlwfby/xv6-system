@@ -173,7 +173,14 @@ UPROGS=\
 	_wc\
 	_zombie\
 	_date\
+<<<<<<< HEAD
 	_test\
+=======
+	_chmod\
+	_shutdown\
+	_touch\
+
+>>>>>>> gaohannk/master
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

@@ -30,4 +30,9 @@ SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(date)
+SYSCALL(chmod)
+SYSCALL(halt)
+SYSCALL(mkfile)
+SYSCALL(getuid)
+
 

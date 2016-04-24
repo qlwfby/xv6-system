@@ -13,9 +13,11 @@
 #include "fs.h"
 #include "file.h"
 #include "fcntl.h"
-
+//#include "user.h"
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
+
+
 static int
 argfd(int n, int *pfd, struct file **pf)
 {
@@ -48,6 +50,13 @@ fdalloc(struct file *f)
   }
   return -1;
 }
+
+int
+sys_getuid(void)
+{
+  return (int) proc->curUserId;
+}
+
 
 int
 sys_dup(void)
@@ -236,7 +245,7 @@ bad:
 }
 
 static struct inode*
-create(char *path, short type, short major, short minor)
+create(char *path, short type, short major, short minor,short curUser)
 {
   uint off;
   struct inode *ip, *dp;
@@ -262,6 +271,7 @@ create(char *path, short type, short major, short minor)
   ip->major = major;
   ip->minor = minor;
   ip->nlink = 1;
+  ip->ownerId = curUser;
   iupdate(ip);
 
   if(type == T_DIR){  // Create . and .. entries.
@@ -294,7 +304,7 @@ sys_open(void)
   begin_op();
 
   if(omode & O_CREATE){
-    ip = create(path, T_FILE, 0, 0);
+    ip = create(path, T_FILE, 0, 0, sys_getuid());
     if(ip == 0){
       end_op();
       return -1;
@@ -337,7 +347,23 @@ sys_mkdir(void)
   struct inode *ip;
 
   begin_op();
-  if(argstr(0, &path) < 0 || (ip = create(path, T_DIR, 0, 0)) == 0){
+  if(argstr(0, &path) < 0 || (ip = create(path, T_DIR, 0, 0, sys_getuid())) == 0){
+    end_op();
+    return -1;
+  }
+  iunlockput(ip);
+  end_op();
+  return 0;
+}
+
+int
+sys_mkfile(void)
+{
+  char *path;
+  struct inode *ip;
+
+  begin_op();
+  if(argstr(0, &path) < 0 || (ip = create(path, T_FILE, 0, 0, sys_getuid())) == 0){
     end_op();
     return -1;
   }
@@ -358,7 +384,7 @@ sys_mknod(void)
   if((len=argstr(0, &path)) < 0 ||
      argint(1, &major) < 0 ||
      argint(2, &minor) < 0 ||
-     (ip = create(path, T_DEV, major, minor)) == 0){
+     (ip = create(path, T_DEV, major, minor, sys_getuid())) == 0){
     end_op();
     return -1;
   }
@@ -440,3 +466,26 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+
+int
+sys_chmod(void) {
+        char *path;
+        int mode;
+        struct inode *ip;
+        if(argstr(0, &path) < 0 || argint(1, &mode) < 0)
+            return -1;
+
+        begin_op();
+        if((ip = namei(path)) == 0) {
+            end_op();
+            return -1;
+        }
+        ilock(ip);
+        ip->mode = mode;
+        iupdate(ip); // Copy to disk
+        iunlockput(ip);
+        end_op();
+        return 0;
+   }
+
+

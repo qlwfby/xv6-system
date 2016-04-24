@@ -42,6 +42,7 @@ sys_getpid(void)
   return proc->pid;
 }
 
+
 int
 sys_sbrk(void)
 {
@@ -97,4 +98,11 @@ sys_date(void){
     return -1;
   cmostime((struct rtcdate *) addr);
   return 0;
+}
+
+int sys_halt(void){
+	char *p = "Shutdown";
+   	for( ; *p; p++)
+   		outw(0xB004, 0x2000);
+   	return 0;
 }

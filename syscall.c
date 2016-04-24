@@ -99,6 +99,10 @@ extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_date(void);
+extern int sys_chmod(void);
+extern int sys_halt(void);
+extern int sys_mkfile(void);
+extern int sys_getuid(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -123,6 +127,12 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_date]    sys_date,
+[SYS_chmod]   sys_chmod,
+[SYS_halt]    sys_halt,
+[SYS_mkfile]  sys_mkfile,
+[SYS_getuid]  sys_getuid,
+
+
 };
 
 void
