@@ -29,6 +29,8 @@ int halt(void);
 int mkfile(char*);
 int getuid(void);
 int setuid(int);
+int fsck(void);
+int isdir(char*);
 
 
 

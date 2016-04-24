@@ -35,6 +35,8 @@ SYSCALL(halt)
 SYSCALL(mkfile)
 SYSCALL(getuid)
 SYSCALL(setuid)
+SYSCALL(fsck)
+SYSCALL(isdir)
 
 
 

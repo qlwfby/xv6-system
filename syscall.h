@@ -26,4 +26,5 @@
 #define	SYS_mkfile 25
 #define	SYS_getuid 26
 #define	SYS_setuid 27
-
+#define SYS_fsck   28
+#define SYS_isdir   29

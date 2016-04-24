@@ -4,7 +4,8 @@
 #include "stat.h"
 #include "user.h"
 #include "fcntl.h"
-//#include "defs.h"
+#include "psw.h"
+
 
 char *argv[] = { "sh", 0 };
 int
@@ -13,7 +14,7 @@ getuser(char *buf, int nbuf)
   memset(buf, 0, nbuf);
   gets(buf, nbuf);
   if(buf[0] == 0) // EOF
-    return -1;
+	  return -1;
   return 0;
 }
 int
@@ -25,12 +26,49 @@ getpwd(char *buf, int nbuf)
     return -1;
   return 0;
 }
-//int verifyuser(char *user,char *pwd){
 
-//}
-int getuserid(char *user){
- return 0;
+int getuserid(char *usr,char *pwd){
+	struct psw t;
+	int fd = open("psw", O_RDONLY);
+	int size = sizeof(t);
+	while(read(fd, &t, size) != 0) {
+		if(!strcmp(t.password,pwd)&&!strcmp(t.username,usr))
+			return t.uid;
+	}
+	return 0;
 }
+
+void save(char *usr, char *pwd, uint uid) {
+	int fd;
+	struct psw t;
+	strcpy(t.username,usr);
+	strcpy(t.password,pwd);
+	t.uid = uid;
+	fd = open("/psw", O_CREATE | O_RDWR);
+	if (fd<0){
+		printf(1, "error: create psw file failed\n");
+		exit();
+	}
+	int size = sizeof(t);
+	if (write(fd, &t, size) != size) {
+		printf(1, "error: write to psw file failed\n");
+		exit();
+	}
+	printf(1, "Set up %s account successfully\n", usr);
+	close(fd);
+}
+int verifyuser(char *usr, char *pwd){
+	struct psw t;
+	int fd = open("psw", O_RDONLY);
+	int size = sizeof(t);
+	while(read(fd, &t, size) != 0) {
+		if(!strcmp(t.password,pwd)&&!strcmp(t.username,usr))
+			return 1;
+	}
+	return 0;
+}
+
+
 int
 main(void)
 {
@@ -42,23 +80,27 @@ main(void)
   }
   dup(0);  // stdout
   dup(0);  // stderr
-  static char user[100];
-  static char pwd[100];
+
   // Set up password and create passwd file
+  static char user[MAXNAME]="root";
+  static char pwd[MAXPSW];
   printf(1,"Set up root password:");
   getpwd(pwd, sizeof(pwd));
-  char *path="/passwd";
-  char *usr="root:123:0";
-  int fd=open(path,O_CREATE);
-  if(write(fd,usr,strlen(usr))<0)
-	  printf(2,"create password file error\n");
+  pwd[strlen(pwd) - 1] = '\0';
+  save(user, pwd,0);
+
   for(;;){
+	int verify=0;
+	while(!verify){
 	printf(1, "Login:");
 	getuser(user, sizeof(user));
+	user[strlen(user) - 1] = '\0';
 	printf(1, "Password:");
 	getpwd(pwd, sizeof(pwd));
-	//int verify= verifyuser(user,pwd);
-	int uid = getuserid(user);
+	pwd[strlen(pwd) - 1] = '\0';
+	verify= verifyuser(user,pwd);
+	}
+	int uid = getuserid(user,pwd);
     printf(1, "init: starting sh\n");
     pid = fork();
     if(pid < 0){

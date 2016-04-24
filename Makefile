@@ -177,7 +177,8 @@ UPROGS=\
 	_shutdown\
 	_touch\
 	_adduser\
-
+	_fsck\
+	_tree
 
 
 fs.img: mkfs README $(UPROGS)

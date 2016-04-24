@@ -104,6 +104,9 @@ extern int sys_halt(void);
 extern int sys_mkfile(void);
 extern int sys_getuid(void);
 extern int sys_setuid(void);
+extern int sys_fsck(void);
+extern int sys_isdir(void);
+
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -133,6 +136,9 @@ static int (*syscalls[])(void) = {
 [SYS_mkfile]  sys_mkfile,
 [SYS_getuid]  sys_getuid,
 [SYS_setuid]  sys_setuid,
+[SYS_fsck]  sys_fsck,
+[SYS_isdir]  sys_isdir,
+
 };
 
 void

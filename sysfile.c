@@ -17,6 +17,7 @@
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
 extern int sys_getuid(void);
+//extern struct inode* iget(uint, uint);
 
 static int
 argfd(int n, int *pfd, struct file **pf)
@@ -297,7 +298,7 @@ sys_open(void)
     return -1;
 
   begin_op();
-
+  if(sys_getuid())
   if(omode & O_CREATE){
     ip = create(path, T_FILE, 0, 0, sys_getuid());
     if(ip == 0){
@@ -482,5 +483,81 @@ sys_chmod(void) {
         end_op();
         return 0;
    }
+/**
+static struct inode*
+iget(uint dev, uint inum)
+{
+  struct inode *ip, *empty;
 
+  acquire(&icache.lock);
 
+  // Is the inode already cached?
+  empty = 0;
+  for(ip = &icache.inode[0]; ip < &icache.inode[NINODE]; ip++){
+    if(ip->ref > 0 && ip->dev == dev && ip->inum == inum){
+      ip->ref++;
+      release(&icache.lock);
+      return ip;
+    }
+    if(empty == 0 && ip->ref == 0)    // Remember empty slot.
+      empty = ip;
+  }
+
+  // Recycle an inode cache entry.
+  if(empty == 0)
+    panic("iget: no inodes");
+
+  ip = empty;
+  ip->dev = dev;
+  ip->inum = inum;
+  ip->ref = 1;
+  ip->flags = 0;
+  release(&icache.lock);
+
+  return ip;
+}
+**/
+
+int
+sys_fsck(void){
+	struct superblock sb;
+	//check superblock first
+	  readsb(ROOTDEV,&sb);
+	  if(sb.logstart>sb.inodestart)
+		  panic("error:log block should layout before inode block");
+	  if(sb.inodestart>sb.bmapstart)
+		  panic("error:inode block should layout before free map block");
+	  if(sb.nblocks+sb.ninodes+sb.nlog>sb.size)
+		  panic("error: total block number is large than total disk size");
+
+	 // free block
+	 // static struct inode *ip;
+	 // ip= iget(ROOTDEV,0);
+	  //if(ip->type==T_DIR)
+	//	  panic("TDIR");
+	 // uint i=0;
+	  //for(i=0;i<NDIRECT+1;i++){
+	//	  uint add =ip->addrs[i];
+	//	  char * err = (char*) add;
+	//	  panic(err);
+	 // }
+	 // inode state
+	 return 0;
+}
+int
+sys_isdir(void){
+	char *path;
+	  struct inode *ip;
+	  begin_op();
+	  if(argstr(0, &path) < 0 || (ip=namei(path))==0) {
+	    end_op();
+	    return -1;
+	  }
+	  if(ip->type!=T_DIR){
+		  end_op();
+		  return 0;
+	  }
+	  iunlockput(ip);
+	  end_op();
+	  return 1;
+}
