@@ -44,6 +44,23 @@ sys_getpid(void)
 
 
 int
+sys_setuid(void)
+{
+	int id;
+
+	if(argint(0, &id) < 0)
+	    return -1;
+  return proc->curUserId=id;
+}
+
+int
+sys_getuid(void)
+{
+  return (int) proc->curUserId;
+}
+
+
+int
 sys_sbrk(void)
 {
   int addr;

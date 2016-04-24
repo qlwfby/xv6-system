@@ -16,7 +16,11 @@
 //#include "user.h"
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
+<<<<<<< HEAD
 
+=======
+extern int sys_getuid(void);
+>>>>>>> gaohannk/master
 
 static int
 argfd(int n, int *pfd, struct file **pf)
@@ -50,6 +54,8 @@ fdalloc(struct file *f)
   }
   return -1;
 }
+
+
 
 int
 sys_getuid(void)

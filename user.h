@@ -28,6 +28,10 @@ int chmod(char *, int);
 int halt(void);
 int mkfile(char*);
 int getuid(void);
+<<<<<<< HEAD
+=======
+int setuid(int);
+>>>>>>> gaohannk/master
 
 
 

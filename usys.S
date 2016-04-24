@@ -34,5 +34,10 @@ SYSCALL(chmod)
 SYSCALL(halt)
 SYSCALL(mkfile)
 SYSCALL(getuid)
+<<<<<<< HEAD
+=======
+SYSCALL(setuid)
+
+>>>>>>> gaohannk/master
 
 

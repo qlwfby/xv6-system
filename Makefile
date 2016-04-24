@@ -174,11 +174,20 @@ UPROGS=\
 	_zombie\
 	_date\
 <<<<<<< HEAD
+<<<<<<< HEAD
 	_test\
 =======
 	_chmod\
 	_shutdown\
 	_touch\
+
+>>>>>>> gaohannk/master
+=======
+	_chmod\
+	_shutdown\
+	_touch\
+	_adduser\
+
 
 >>>>>>> gaohannk/master
 
